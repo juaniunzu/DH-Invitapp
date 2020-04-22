@@ -14,9 +14,11 @@ import java.util.zip.Inflater;
 public class InvitadosAdapter extends RecyclerView.Adapter {
 
     private List<Invitado> listaDeInvitados;
+    private InvitadosListener listener;
 
-    public InvitadosAdapter(List<Invitado> listaDeInvitados) {
+    public InvitadosAdapter(List<Invitado> listaDeInvitados, InvitadosListener listener) {
         this.listaDeInvitados = listaDeInvitados;
+        this.listener = listener;
     }
 
     //creo la celda del layout
@@ -65,10 +67,20 @@ public class InvitadosAdapter extends RecyclerView.Adapter {
 
         private TextView celdaInvitadoTextViewNombre;
 
-        public InvitadoViewHolder(@NonNull View itemView) {
+        public InvitadoViewHolder(@NonNull final View itemView) {
             super(itemView);
 
             celdaInvitadoTextViewNombre = itemView.findViewById(R.id.celdaInvitadoTextViewNombre);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Invitado invitado = listaDeInvitados.get(getAdapterPosition());
+
+                    listener.hicieronClick(invitado);
+
+                }
+            });
 
         }
 
@@ -78,6 +90,10 @@ public class InvitadosAdapter extends RecyclerView.Adapter {
             celdaInvitadoTextViewNombre.setText(unInvitado.getNombre());
 
         }
+    }
+
+    public interface InvitadosListener{
+        void hicieronClick(Invitado unInvitado);
     }
 
 

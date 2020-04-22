@@ -1,5 +1,6 @@
 package com.example.invitapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class InvitadosFragment extends Fragment {
+public class InvitadosFragment extends Fragment implements InvitadosAdapter.InvitadosListener {
 
     private RecyclerView recyclerView;
 
@@ -38,7 +39,7 @@ public class InvitadosFragment extends Fragment {
         List<Invitado> listaInvitados = obtenerInvitados();
 
         //creo el adapter
-        InvitadosAdapter invitadosAdapter = new InvitadosAdapter(listaInvitados);
+        InvitadosAdapter invitadosAdapter = new InvitadosAdapter(listaInvitados, InvitadosFragment.this);
 
         //creo el LinearLayoutManager
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -99,4 +100,16 @@ public class InvitadosFragment extends Fragment {
 
     }
 
+    @Override
+    public void hicieronClick(Invitado unInvitado) {
+        Intent fragmentADetail = new Intent(getContext(), DetailActivity.class);
+
+        Bundle datosAlDetail = new Bundle();
+        datosAlDetail.putString(DetailActivity.NOMBRE, unInvitado.getNombre());
+
+        fragmentADetail.putExtras(datosAlDetail);
+
+        startActivity(fragmentADetail);
+
+    }
 }
